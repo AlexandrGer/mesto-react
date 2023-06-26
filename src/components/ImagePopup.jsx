@@ -10,8 +10,7 @@ export const ImagePopup = (props) => {
 						className="popup__button-close button"
 						type="button"
 						aria-label="Закрыть"
-						onClick={props.onClose}>
-					</button>
+						onClick={props.onClose} />
 					<figure className="popup__container-image">
 						<img
 							className="popup__img"

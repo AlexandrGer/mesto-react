@@ -13,11 +13,17 @@ export const Card = (props) => {
 				src={props.img}
 				alt={props.name}
 				onClick={handleClick} />
-			<button className="element__button-delete button" type="button" aria-label="Удалить карточку"></button>
+			<button
+				className="element__button-delete button"
+				type="button"
+				aria-label="Удалить карточку" />
 			<div className="element__description">
 				<h2 className="element__title">{props.name}</h2>
 				<div className="element__container-likes">
-					<button className="element__button-like button" type="button" aria-label="Лайкнуть карточку"></button>
+					<button
+						className="element__button-like button"
+						type="button"
+						aria-label="Лайкнуть карточку" />
 					<p className="element__like-counter">{props.likes.length}</p>
 				</div>
 			</div>

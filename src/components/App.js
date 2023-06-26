@@ -4,7 +4,7 @@ import { Main } from './Main';
 import { Footer } from './Footer';
 import { PopupWithForm } from './PopupWithForm';
 import { ImagePopup } from './ImagePopup';
-import { api } from '../utils/api';
+// import { api } from '../utils/api';
 
 
 
@@ -106,22 +106,6 @@ function App() {
 			<ImagePopup
 				card={selectedCard}
 				onClose={closeAllPopups} />
-
-			{/* <!-- TEMPLATE --> */}
-
-			{/* <template id="cards-element">
-				<li className="element">
-					<img src="#" alt="#" className="element__image" />
-					<button className="element__button-delete button" type="button" aria-label="Удалить карточку"></button>
-					<div className="element__description">
-						<h2 className="element__title"></h2>
-						<div className="element__container-likes">
-							<button className="element__button-like button" type="button" aria-label="Лайкнуть карточку"></button>
-							<p className="element__like-counter">0</p>
-						</div>
-					</div>
-				</li>
-			</template> */}
 
 		</div>
 

@@ -1,12 +1,12 @@
 import React from 'react';
-// import avatar from '../images/Avatar.jpg';
+import avatar from '../images/Avatar.jpg';
 import { api } from '../utils/api';
 import { Card } from './Card';
 
 export const Main = (props) => {
-	const [userName, setUserName] = React.useState();
-	const [userDescription, setUserDescription] = React.useState();
-	const [userAvatar, setUserAvatar] = React.useState();
+	const [userName, setUserName] = React.useState('Жак-Ив Кусто');
+	const [userDescription, setUserDescription] = React.useState('Исследователь океана');
+	const [userAvatar, setUserAvatar] = React.useState(avatar);
 	const [cards, setCards] = React.useState([]);
 
 	React.useEffect(() => {
@@ -14,11 +14,11 @@ export const Main = (props) => {
 			setUserName(data.name);
 			setUserDescription(data.about);
 			setUserAvatar(data.avatar);
-		})
+		}).catch((err) => console.log(`При загрузке данных Пользователя возникла ошибка: ${err}`))
 
 		api.getCards().then((data) => {
 			setCards(data);
-		})
+		}).catch((err) => console.log(`При загрузке карточек с сервера возникла ошибка: ${err}`))
 
 
 
@@ -36,8 +36,7 @@ export const Main = (props) => {
 							className="profile__button-avatar button"
 							type="button"
 							aria-label="Редактировать аватар"
-							onClick={props.onEditAvatar}>
-						</button>
+							onClick={props.onEditAvatar} />
 					</div>
 					<div className="profile__description">
 						<div className="profile__container">
@@ -46,8 +45,7 @@ export const Main = (props) => {
 								className="profile__button-edit button"
 								type="button"
 								aria-label="Редактировать профиль"
-								onClick={props.onEditProfile}>
-							</button>
+								onClick={props.onEditProfile} />
 						</div>
 						<p className="profile__job">{userDescription}</p>
 					</div>
@@ -56,8 +54,7 @@ export const Main = (props) => {
 					className="profile__button-add button"
 					type="button"
 					aria-label="Добавить карточку"
-					onClick={props.onAddPlace}>
-				</button>
+					onClick={props.onAddPlace} />
 			</section>
 
 			<section className="elements page__elements">
