@@ -91,7 +91,6 @@ class Api {
 	}
 
 	changeLikeCardStatus(cardId, isLiked) {
-		// console.log(cardId)
 		if (isLiked) {
 			return this.deleteLike(cardId);
 		} else {
