@@ -1,6 +1,8 @@
 import React from "react";
+import { usePopupClose } from "../hooks/usePopupClose";
 
 export const PopupWithForm = ({ name, title, buttonText, isOpen, onClose, children, onSubmit }) => {
+	usePopupClose(isOpen, onClose);
 	return (
 		<div className={isOpen ? `popup popup_opened popup_type_${name}` : `popup popup_type_${name}`}>
 			<div className="popup__container">
@@ -8,10 +10,10 @@ export const PopupWithForm = ({ name, title, buttonText, isOpen, onClose, childr
 					className="popup__button-close button"
 					type="button"
 					aria-label="Закрыть"
-					onClick={onClose}>
-				</button>
+					onClick={onClose}
+				/>
 
-				<form name={name} className="popup__form" noValidate onSubmit={onSubmit}>
+				<form name={name} className="popup__form" onSubmit={onSubmit}>
 					<h3 className="popup__title">{title}</h3>
 					{children}
 					<button

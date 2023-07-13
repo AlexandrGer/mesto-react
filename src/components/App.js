@@ -24,6 +24,7 @@ function App() {
 	const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
 	const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
 	const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
+	const [isLoading, setIsLoading] = React.useState(false);
 
 	const [selectedCard, setSelectedCard] = React.useState({
 		name: '',
@@ -52,25 +53,35 @@ function App() {
 		}).catch((err) => console.log(`При удалении карточки возникла ошибка: ${err}`))
 	}
 
-	function handleUpdateUser(data) {
-		api.sendUserData(data).then((res) => {
-			setCurrentUser(res);
-			closeAllPopups();
-		}).catch((err) => console.log(`При редактировании профиля возникла ошибка: ${err}`))
+	function handleSubmit(request) {
+		setIsLoading(true);
+		request()
+			.then(closeAllPopups)
+			.catch(console.error)
+			.finally(() => setIsLoading(false));
 	}
 
-	function handleUpdateAvatar(data) {
-		api.sendAvatarData(data).then((res) => {
-			setCurrentUser(res);
-			closeAllPopups();
-		}).catch((err) => console.log(`При редактировании аватара возникла ошибка: ${err}`))
+	function handleProfileFormSubmit(inputValues) {
+		function makeRequest() {
+			return api.sendUserData(inputValues).then(setCurrentUser)
+		}
+		handleSubmit(makeRequest);
 	}
 
-	function handleAddPlaceSubmit(data) {
-		api.addNewCard(data).then((newCard) => {
-			setCards([newCard, ...cards]);
-			closeAllPopups();
-		}).catch((err) => console.log(`При добавлении карточки возникла ошибка: ${err}`))
+	function handleAddPlaceFormSubmit(inputValues) {
+		function makeRequest() {
+			return api.addNewCard(inputValues).then((newCard) => {
+				setCards([newCard, ...cards])
+			})
+		}
+		handleSubmit(makeRequest);
+	}
+
+	function handleAvatarFormSubmit(inputValues) {
+		function makeRequest() {
+			return api.sendAvatarData(inputValues).then(setCurrentUser)
+		}
+		handleSubmit(makeRequest);
 	}
 
 	function handleEditProfileClick() { setEditProfilePopupOpen(true); }
@@ -119,19 +130,22 @@ function App() {
 				<EditProfilePopup
 					isOpen={isEditProfilePopupOpen}
 					onClose={closeAllPopups}
-					onUpdateUser={handleUpdateUser}
+					onUpdateUser={handleProfileFormSubmit}
+					isLoading={isLoading}
 				/>
 
 				<AddPlacePopup
 					isOpen={isAddPlacePopupOpen}
 					onClose={closeAllPopups}
-					onAddPlace={handleAddPlaceSubmit}
+					onAddPlace={handleAddPlaceFormSubmit}
+					isLoading={isLoading}
 				/>
 
 				<EditAvatarPopup
 					isOpen={isEditAvatarPopupOpen}
 					onClose={closeAllPopups}
-					onUpdateAvarar={handleUpdateAvatar}
+					onUpdateAvarar={handleAvatarFormSubmit}
+					isLoading={isLoading}
 				/>
 
 				<PopupWithForm
