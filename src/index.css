@@ -59,3 +59,112 @@
 @import url(./blocks/popup/__container-image/popup__container-image.css);
 @import url(./blocks/popup/__img/pupup__img.css);
 @import url(./blocks/popup/__caption/popup__caption.css);
+
+.header__link {
+	width: 100%;
+	min-width: 53px;
+	height: 22px;
+	background-color: black;
+	color: white;
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 22px;
+	text-align: right;
+	text-decoration: none;
+}
+
+.header__email {
+	margin: 0 24px 0 0;
+	font-weight: 500;
+	font-size: 18px;
+	line-height: 22px;
+	text-align: right;
+}
+
+.header__container-login {
+	display: flex;
+}
+
+.verification {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.verification__title {
+	font-weight: 900;
+	font-size: 24px;
+	line-height: 29.05px;
+	text-align: center;
+	margin: 60px 0 50px 0;
+}
+
+.verification__form {
+	width: 100%;
+	max-width: 358px;
+	display: flex;
+	flex-direction: column;
+}
+
+.verification__input {
+	margin: 0;
+	border: 0;
+	padding: 0 0 13px 0;
+	outline: none;
+	border-bottom: 2px solid #CCCCCC;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 17px;
+	color: white;
+	box-sizing: border-box;
+	background: black;
+}
+
+.verification__input:not(:last-of-type) {
+	margin-bottom: 30px;
+}
+
+.verification__button {
+	font-weight: 400;
+	font-size: 18px;
+	line-height: 21.78px;
+	margin: 216px 0 0 0;
+	border-radius: 2px;
+}
+
+.verification__caption {
+	display: flex;
+	font-weight: 400;
+	font-size: 14px;
+	line-height: 17px;
+	margin: 15px 0 0 0;
+}
+
+.verification__subtitle {
+	margin: 0;
+	padding: 0;
+}
+
+.verification__link {
+	color: white;
+	text-decoration: none;
+	margin: 0 0 0 5px;
+}
+
+.popup__icon {
+	width: 120px;
+	margin: 60px auto 32px;
+
+}
+
+.popup__info {
+	margin: 0 auto 60px;
+	padding: 0;
+	font-weight: 900;
+	font-size: 24px;
+	line-height: 29px;
+	color: black;
+	width: 100%;
+	max-width: 358px;
+	text-align: center;
+}

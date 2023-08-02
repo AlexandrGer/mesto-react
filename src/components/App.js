@@ -6,10 +6,16 @@ import { PopupWithForm } from './PopupWithForm';
 import { ImagePopup } from './ImagePopup';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { api } from '../utils/api';
+import { auth } from '../utils/auth';
 import avatar from '../images/Avatar.jpg';
 import { EditProfilePopup } from './EditProfilePopup';
 import { EditAvatarPopup } from './EditAvatarPopup';
 import { AddPlacePopup } from './AddPlacePopup';
+import { Login } from './Login';
+import { Register } from './Register';
+import { InfoTooltip } from './InfoTooltip';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import { ProtectedRoute } from './ProtectedRoute';
 
 
 
@@ -24,6 +30,7 @@ function App() {
 	const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
 	const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
 	const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
+	const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState(false);
 	const [isLoading, setIsLoading] = React.useState(false);
 
 	const [selectedCard, setSelectedCard] = React.useState({
@@ -31,6 +38,11 @@ function App() {
 		img: '',
 	});
 	const [cards, setCards] = React.useState([]);
+
+	const navigate = useNavigate();
+	const [isResultRegistration, setIsResultRegistration] = React.useState(true);
+	const [email, setEmail] = React.useState('');
+	const [isLoggedIn, setIsLoggedIn] = React.useState(false);
 
 	function handleCardClick({ name, img }) {
 		setSelectedCard({
@@ -92,11 +104,62 @@ function App() {
 		setEditProfilePopupOpen(false);
 		setAddPlacePopupOpen(false);
 		setEditAvatarPopupOpen(false);
+		setIsInfoTooltipPopupOpen(false);
 		setSelectedCard({
 			name: '',
 			img: ''
 		})
 	}
+
+	const handleOnSignOut = React.useCallback(() => {
+		localStorage.removeItem("jwt");
+		setIsLoggedIn(false);
+		setEmail("");
+		navigate('/sign-in');
+	}, [navigate])
+
+	function handleRegister(data) {
+		auth.register(data).then(() => {
+			setIsResultRegistration(true);
+			setIsInfoTooltipPopupOpen(true);
+			navigate('/sign-in')
+		}).catch((err) => {
+			setIsResultRegistration(false);
+			setIsInfoTooltipPopupOpen(true);
+			console.log(err);
+		})
+	}
+
+	function handleLogin(data) {
+		auth.authorize(data).then((data) => {
+			localStorage.setItem("jwt", data.token);
+			setIsLoggedIn(true);
+			setEmail(email);
+			navigate('/')
+		}).catch((err) => {
+			setIsInfoTooltipPopupOpen(true);
+			console.log(err);
+		})
+	}
+
+	const handleTokenCheck = React.useCallback(() => {
+		const jwt = localStorage.getItem("jwt");
+		if (jwt) {
+			auth.checkToken(jwt).then((data) => {
+				setEmail(data.data.email);
+				setIsLoggedIn(true)
+			})
+				.catch((err) => {
+					handleOnSignOut();
+					console.log(err.status);
+				});
+		}
+	}, [handleOnSignOut]);
+
+	React.useEffect(() => {
+		handleTokenCheck();
+	}, [handleTokenCheck]);
+
 
 	React.useEffect(() => {
 		api.getUserData().then((data) => {
@@ -112,9 +175,30 @@ function App() {
 		<CurrentUserContext.Provider value={currentUser}>
 			<div className="page">
 				<div className="page__container">
+					<Header
+						loggedIn={isLoggedIn}
+						email={email}
+						onSignOut={handleOnSignOut} />
 
-					<Header />
-					<Main
+					<Routes>
+						<Route path='/sign-up' element={<Register onRegister={handleRegister} />} />
+						<Route path='/sign-in' element={<Login onLogin={handleLogin} />} />
+						<Route path="*" element={<Navigate to="/" />} />
+						<Route path='/' element={
+							<ProtectedRoute
+								element={Main}
+								cards={cards}
+								isLoggedIn={isLoggedIn}
+								onEditProfile={handleEditProfileClick}
+								onEditAvatar={handleEditAvatarClick}
+								onAddPlace={handleAddPlaceClick}
+								onCardClick={handleCardClick}
+								onCardLike={handleCardLike}
+								onCardDelete={handleCardDelete}
+							/>} />
+					</Routes>
+
+					{/* <Main
 						cards={cards}
 						onEditProfile={handleEditProfileClick}
 						onEditAvatar={handleEditAvatarClick}
@@ -122,6 +206,11 @@ function App() {
 						onCardClick={handleCardClick}
 						onCardLike={handleCardLike}
 						onCardDelete={handleCardDelete}
+					/> */}
+					<InfoTooltip
+						isOpen={isInfoTooltipPopupOpen}
+						onClose={closeAllPopups}
+						result={isResultRegistration}
 					/>
 					<Footer />
 
