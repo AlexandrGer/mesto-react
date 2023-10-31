@@ -23,6 +23,12 @@
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Figma](https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white)
 
+<h2>Инструкция по установке</h2>
+
+1. ```git clone https://github.com/AlexandrGer/mesto-react.git``` - клонируем репозиторий
+2. ```npm i``` - устанавливаем зависиимости 
+3.  ```npm run start``` - запускаем проект в режиме разработчика
+
 <h2>Методология и процесс создания</h2>
 Работа была выполнена в 2 этапа:
 
